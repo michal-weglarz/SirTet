@@ -13,33 +13,32 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using SirTetLogic;
 using System.Windows.Threading;
 
 namespace SirTet
 {
     public partial class MainWindow : Window
     {
-        bool game_Start = true;
+        MainGameController game;
+        Rectangle[,] rectangleTab = new Rectangle[10,24];
+
         float game_Speed = 1f;
         DateTime currentd_Time = DateTime.Now;
-        int x = 4;
-        int y = 0;
-        Rectangle[,] r = new Rectangle[10,24];
         DispatcherTimer timer;
+
         public MainWindow()
         {
             InitializeComponent();
             Tiles();
+            game = new MainGameController(ref rectangleTab);
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(game_Speed);
             timer.Tick += timer_Tick;
+            KeyDown += GetKey;
             timer.Start();
-            KeyDown += Move_Key;
         }
-        void timer_Tick(object sender, EventArgs e)
-        {
-            Move_Down();
-        }
+
         private void Tiles ()
         {
             for ( int i = 0; i < 10; i++)
@@ -49,35 +48,36 @@ namespace SirTet
                     Rectangle tile = new Rectangle();
                     tile.StrokeThickness = 1;
                     tile.Stroke = Brushes.White;
-                    Grid.SetRow(tile, j);
-                    Grid.SetColumn(tile, i);
+                    System.Windows.Controls.Grid.SetRow(tile, j);
+                    System.Windows.Controls.Grid.SetColumn(tile, i);
                     sirtet_Grid.Children.Add(tile);
-                    r[i, j] = tile;
+                    rectangleTab[i, j] = tile;
                 }
             }
         }
-        void Move_Down()
-        {
-            r[x, y].Fill = new SolidColorBrush(Colors.White);
-            if (y > 0)
-            r[x, y - 1].Fill = new SolidColorBrush(Colors.Black);
-            y++;
-        }
-        void Move_Key(object sender, KeyEventArgs e)
+
+        void GetKey(object sender, KeyEventArgs e)
         {
             switch (e.Key.ToString())
             {
                 case "Left":
-                    r[x, y-1].Fill = new SolidColorBrush(Colors.Black);//y-1 ponieważ na końcu funckji Move_Down y jest zwiększany o 1 przez co wskazywane jest pole o jedno niżej niż pole aktywne(pokolorowane)
-                    x--;
-                    r[x, y-1].Fill = new SolidColorBrush(Colors.White);
+                    game.MoveBlockHorizontal(true);
                     break;
                 case "Right":
-                    r[x, y-1].Fill = new SolidColorBrush(Colors.Black);
-                    x++;
-                    r[x, y-1].Fill = new SolidColorBrush(Colors.White);
+                    game.MoveBlockHorizontal(false);
+                    break;
+                case "Up":
+                    game.RotateBlock();
+                    break;
+                case "Down":
+                    game.BlockFall();
                     break;
             }
+        }
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            game.BlockFall();
         }
     }
 }
