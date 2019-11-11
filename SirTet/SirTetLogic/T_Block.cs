@@ -98,5 +98,7 @@ namespace SirTetLogic
             }
             return false;
         }
+        public override string GetBlockType() => "T_Block";
+
     }
 }

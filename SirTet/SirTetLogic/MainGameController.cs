@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Shapes;
 using System.Windows.Media;
+using System.Windows.Threading;
+using System.Windows.Controls;
 
 namespace SirTetLogic
 {
@@ -12,19 +15,42 @@ namespace SirTetLogic
         int startY;
         int sizeX;
         int sizeY;
-        
-        Block block;
-        Color blockColor;
-        Grid grid;
 
-        public MainGameController(ref Rectangle[,] Grid, int blockGenerateX = 4, int blockGenerateY=2, int sizeGridX = 10, int sizeGridY = 24)
+        Grid grid;        
+        Block block;
+        Color blockColor;        
+
+        Grid nextBlockGrid;       
+        Color nextBlockColor;
+        Block nextBlock;
+        int nextBlockType;
+        byte[] nextBlockColorArray;
+
+        Score score;
+        
+
+        float gameSpeed;
+        DateTime currentd_Time = DateTime.Now;
+        DispatcherTimer timer;
+
+        Random random = new Random();
+
+        public MainGameController(ref Rectangle[,] Grid, ref Rectangle[,] NextBlockGrid, ref TextBlock ScoreText, ref TextBlock ComboText, ref TextBlock RecordText, float GameSpeed = 0.5f, int blockGenerateX = 4, int blockGenerateY=2, int sizeGridX = 10, int sizeGridY = 24)
         {            
-            grid = new Grid(ref Grid);            
+            grid = new Grid(ref Grid);
+            nextBlockGrid = new Grid(ref NextBlockGrid,4,3);
             startX = blockGenerateX;
             startY = blockGenerateY;
             sizeX = sizeGridX;
             sizeY = sizeGridY;
-            CrateBlock();            
+            score = new Score(ref ScoreText, ref ComboText,ref RecordText);
+            gameSpeed = GameSpeed;
+            CrateBlock();
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(gameSpeed);
+            timer.Tick += timer_Tick;
+            timer.Start();
         }        
 
         public void BlockFall()
@@ -37,10 +63,35 @@ namespace SirTetLogic
             }                
             else
             {
-                grid.Indurate(block.GetBlock());
-                CrateBlock();
+                if(grid.Indurate(block.GetBlock(), 4))
+                    GameOver();
+                else
+                {
+                    List<int> lineToClear = grid.LinesToDestroy(block.GetBlock());
+                    if(lineToClear.Count>0)
+                    {
+                        foreach(int line in lineToClear)
+                        {
+                            grid.ClearLine(line, Colors.Black);
+                            score.AddMainScore(1000);
+                            score.AddLineCombo(1);
+                            //Podlicznie punktów za linie
+                        }
+                    }
+                    else
+                    {
+                        if(score.GetLineCombo()>0)
+                            score.AddUpLineCombo(2000);//Podlicznie combo za linie
+                    }
+                    CrateBlock();
+                }
             }
                 
+        }
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            BlockFall();
         }
 
         public void MoveBlockHorizontal(bool toLeft)
@@ -65,47 +116,113 @@ namespace SirTetLogic
 
         void CrateBlock()
         {
-            GenerateBlock();
-            GenerateColor();
+            if(block == null)
+            {
+                block = GenerateBlock();
+                nextBlock = GenerateBlock();
+                blockColor = GenerateColor();
+                nextBlockColor = GenerateColor();
+            }
+            else
+            {
+                block = GenerateBlock(nextBlockType);               
+                blockColor = GenerateColor(nextBlockColorArray[0], nextBlockColorArray[1], nextBlockColorArray[2]);
+                nextBlock = GenerateBlock();
+                nextBlockColor = GenerateColor();
+            }
             grid.DrawBlock(block.GetBlock(),blockColor);
+            DrawNextBlock(nextBlock.GetBlockType(), nextBlockColor);
+
         }
 
-        void GenerateBlock()
-        {
-            Random random = new Random();
-            switch(random.Next(1, 7))
+        Block GenerateBlock(int blockType = 0)
+        {            
+            if(blockType == 0)
+                blockType = random.Next(1, 7);
+            switch(blockType)
             {
                 case 1:
-                    block = new I_Block(startX,startY);
-                    break;
+                    return new I_Block(startX,startY);
                 case 2:
-                    block = new J_Block(startX, startY);
-                    break;
+                    return new J_Block(startX, startY);
                 case 3:
-                    block = new L_Block(startX, startY);
-                    break;
+                    return new L_Block(startX, startY);
                 case 4:
-                    block = new O_Block(startX, startY);
-                    break;
+                    return new O_Block(startX, startY);
                 case 5:
-                    block = new S_Block(startX, startY);
-                    break;
+                    return new S_Block(startX, startY);
                 case 6:
-                    block = new T_Block(startX, startY);
-                    break;
+                    return new T_Block(startX, startY);
                 case 7:
-                    block = new Z_Block(startX, startY);
-                    break;
+                    return new Z_Block(startX, startY);
+                    
             }
+            throw new Exception();
         }
 
-        void GenerateColor()
+        Color GenerateColor(byte r = 0, byte g = 0, byte b = 0)
+        {            
+            Color color;
+            if(r == (byte)0 && g == (byte)0 && b == (byte)0)
+                do
+                     color = Color.FromArgb(255, (byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255));
+                while(color == Color.FromArgb(255, 0, 0, 0) || blockColor == Color.FromArgb(255, 255, 255, 255));
+            else
+                color = Color.FromArgb(255, r, g, b);
+            return color;            
+        }
+
+        void DrawNextBlock(string blockType, Color blockColor)
         {
-            Random random = new Random();
-            do
-                blockColor = Color.FromArgb(255, (byte)random.Next(0, 255), (byte)random.Next(0, 255), (byte)random.Next(0, 255));
-            while(blockColor == Color.FromArgb(255, 0, 0, 0) || blockColor == Color.FromArgb(255, 255, 255, 255));
-            
+            Block preparedBlock;
+            switch(blockType)
+            {
+                case "I_Block":
+                    preparedBlock = new I_Block(1, 1);
+                    nextBlockType = 1;
+                    nextBlockColorArray = new byte[3] { nextBlockColor.R, nextBlockColor.G, nextBlockColor.B };
+                    break;
+                case "J_Block":
+                    preparedBlock = new J_Block(1, 1);
+                    nextBlockType = 2;
+                    nextBlockColorArray = new byte[3] { nextBlockColor.R, nextBlockColor.G, nextBlockColor.B };
+                    break;
+                case "L_Block":
+                    preparedBlock = new L_Block(1, 1);
+                    nextBlockType = 3;
+                    nextBlockColorArray = new byte[3] { nextBlockColor.R, nextBlockColor.G, nextBlockColor.B };
+                    break;
+                case "O_Block":
+                    preparedBlock = new O_Block(1, 1);
+                    nextBlockType = 4;
+                    nextBlockColorArray = new byte[3] { nextBlockColor.R, nextBlockColor.G, nextBlockColor.B };
+                    break;
+                case "S_Block":
+                    preparedBlock = new S_Block(1, 1);
+                    nextBlockType = 5;
+                    nextBlockColorArray = new byte[3] { nextBlockColor.R, nextBlockColor.G, nextBlockColor.B };
+                    break;
+                case "T_Block":
+                    preparedBlock = new T_Block(1, 1);
+                    nextBlockType = 6;
+                    nextBlockColorArray = new byte[3] { nextBlockColor.R, nextBlockColor.G, nextBlockColor.B };
+                    break;
+                case "Z_Block":
+                    preparedBlock = new Z_Block(1, 1);
+                    nextBlockType = 7;
+                    nextBlockColorArray = new byte[3] { nextBlockColor.R, nextBlockColor.G, nextBlockColor.B };
+                    break;
+                default:
+                    throw new Exception();               
+            }
+            nextBlockGrid.ClearAllGrid(Colors.Black);
+            nextBlockGrid.DrawBlock(preparedBlock.GetBlock(), blockColor);
+        }
+
+        void GameOver() //Tutaj co się dzieje po przegranej // Narazie tylko restart
+        {
+            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
         }
     }
 }

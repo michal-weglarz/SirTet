@@ -76,6 +76,8 @@ namespace SirTetLogic
 
         public Point[] GetBlock() => new Point[4] { MiddlePoint, RestPoints[0], RestPoints[1], RestPoints[2] };
 
-        public int GetRotationPose => RotationPose;        
+        public int GetRotationPose => RotationPose;
+
+        public  abstract string GetBlockType();
     }    
 }

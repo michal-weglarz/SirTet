@@ -14,32 +14,27 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using SirTetLogic;
-using System.Windows.Threading;
+
 
 namespace SirTet
 {
     public partial class MainWindow : Window
     {
         MainGameController game;
-        Rectangle[,] rectangleTab = new Rectangle[10,24];
-
-        float game_Speed = 1f;
-        DateTime currentd_Time = DateTime.Now;
-        DispatcherTimer timer;
+        Rectangle[,] blockTab = new Rectangle[10,24];
+        Rectangle[,] nextBlockTab = new Rectangle[5, 5];
+        
 
         public MainWindow()
         {
             InitializeComponent();
-            Tiles();
-            game = new MainGameController(ref rectangleTab);
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(game_Speed);
-            timer.Tick += timer_Tick;
-            KeyDown += GetKey;
-            timer.Start();
+            GenerateBlockTable();
+            GenerateNextBlockTable();
+            game = new MainGameController(ref blockTab, ref nextBlockTab, ref Score, ref Combo, ref Record);
+            KeyDown += GetKey;            
         }
 
-        private void Tiles ()
+        private void GenerateBlockTable ()
         {
             for ( int i = 0; i < 10; i++)
             {
@@ -50,8 +45,25 @@ namespace SirTet
                     tile.Stroke = Brushes.White;
                     System.Windows.Controls.Grid.SetRow(tile, j);
                     System.Windows.Controls.Grid.SetColumn(tile, i);
-                    sirtet_Grid.Children.Add(tile);
-                    rectangleTab[i, j] = tile;
+                    sirtet_Grid_GameSpace.Children.Add(tile);
+                    blockTab[i, j] = tile;
+                }
+            }
+        }
+
+        private void GenerateNextBlockTable()
+        {
+            for(int i = 0;i < 5;i++)
+            {
+                for(int j = 0;j < 5;j++)
+                {
+                    Rectangle tile = new Rectangle();
+                    tile.StrokeThickness = 1;
+                    tile.Stroke = Brushes.White;
+                    System.Windows.Controls.Grid.SetRow(tile, j);
+                    System.Windows.Controls.Grid.SetColumn(tile, i);
+                    sirtet_Grid_NextBlock.Children.Add(tile);
+                    nextBlockTab[i, j] = tile;
                 }
             }
         }
@@ -71,13 +83,10 @@ namespace SirTet
                     break;
                 case "Down":
                     game.BlockFall();
+                    game.BlockFall();
                     break;
             }
         }
-
-        void timer_Tick(object sender, EventArgs e)
-        {
-            game.BlockFall();
-        }
+                
     }
 }

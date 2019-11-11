@@ -98,5 +98,8 @@ namespace SirTetLogic
             }
             return false;
         }
+
+        public override string GetBlockType() => "J_Block";
+
     }
 }

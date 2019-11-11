@@ -38,5 +38,8 @@ namespace SirTetLogic
             //W kontekście tego klocka ta metoda nie ma sensu
             return false;
         }
+
+        public override string GetBlockType() => "O_Block";
+
     }
 }
