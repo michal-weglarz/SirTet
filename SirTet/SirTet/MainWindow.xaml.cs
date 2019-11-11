@@ -12,17 +12,81 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
+using SirTetLogic;
+
 
 namespace SirTet
 {
-    /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        MainGameController game;
+        Rectangle[,] blockTab = new Rectangle[10,24];
+        Rectangle[,] nextBlockTab = new Rectangle[5, 5];
+        
+
         public MainWindow()
         {
             InitializeComponent();
+            GenerateBlockTable();
+            GenerateNextBlockTable();
+            game = new MainGameController(ref blockTab, ref nextBlockTab, ref Score, ref Combo, ref Record);
+            KeyDown += GetKey;            
         }
+
+        private void GenerateBlockTable ()
+        {
+            for ( int i = 0; i < 10; i++)
+            {
+                for ( int j = 0; j < 24; j++)
+                {
+                    Rectangle tile = new Rectangle();
+                    tile.StrokeThickness = 1;
+                    tile.Stroke = Brushes.White;
+                    System.Windows.Controls.Grid.SetRow(tile, j);
+                    System.Windows.Controls.Grid.SetColumn(tile, i);
+                    sirtet_Grid_GameSpace.Children.Add(tile);
+                    blockTab[i, j] = tile;
+                }
+            }
+        }
+
+        private void GenerateNextBlockTable()
+        {
+            for(int i = 0;i < 5;i++)
+            {
+                for(int j = 0;j < 5;j++)
+                {
+                    Rectangle tile = new Rectangle();
+                    tile.StrokeThickness = 1;
+                    tile.Stroke = Brushes.White;
+                    System.Windows.Controls.Grid.SetRow(tile, j);
+                    System.Windows.Controls.Grid.SetColumn(tile, i);
+                    sirtet_Grid_NextBlock.Children.Add(tile);
+                    nextBlockTab[i, j] = tile;
+                }
+            }
+        }
+
+        void GetKey(object sender, KeyEventArgs e)
+        {
+            switch (e.Key.ToString())
+            {
+                case "Left":
+                    game.MoveBlockHorizontal(true);
+                    break;
+                case "Right":
+                    game.MoveBlockHorizontal(false);
+                    break;
+                case "Up":
+                    game.RotateBlock();
+                    break;
+                case "Down":
+                    game.BlockFall();
+                    game.BlockFall();
+                    break;
+            }
+        }
+                
     }
 }

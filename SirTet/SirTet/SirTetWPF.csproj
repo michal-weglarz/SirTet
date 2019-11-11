@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -93,6 +94,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SirTetLogic\SirTetLogic.csproj">
+      <Project>{4b4e6b4c-5019-4a90-b4fa-f501c13bf4d5}</Project>
+      <Name>SirTetLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnitTestSirTet\UnitTestSirTet.csproj">
+      <Project>{7e31b7a2-8017-404d-940c-01380d54326d}</Project>
+      <Name>UnitTestSirTet</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
