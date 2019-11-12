@@ -44,8 +44,8 @@ namespace SirTetLogic
                     break;
                 case 3:
                     restPoints[0] = new Point(restPoints[0].Get()[0], restPoints[0].Get()[1] - 2);
-                    restPoints[1] = new Point(restPoints[1].Get()[0] - 1, restPoints[1].Get()[1] + 1);
-                    restPoints[2] = new Point(restPoints[2].Get()[0] + 1, restPoints[2].Get()[1] - 1);
+                    restPoints[1] = new Point(restPoints[1].Get()[0] - 1, restPoints[1].Get()[1] - 1);
+                    restPoints[2] = new Point(restPoints[2].Get()[0] + 1, restPoints[2].Get()[1] + 1);
                     rotationPose = 0;
                     break;
             }
