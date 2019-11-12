@@ -8,30 +8,35 @@ namespace SirTetLogic
     public class Grid
     {
         Rectangle[,] grid;
+        Color gridColor;
         bool[,] hardLayer;
         int sizeX;
         int sizeY;
 
-        public Grid(ref Rectangle[,] RectangleTab, int sizeGridX = 10, int sizeGridY = 24)
+        public Grid(ref Rectangle[,] RectangleTab, Color color, int sizeGridX = 10, int sizeGridY = 24)
         {
             grid = RectangleTab;
             sizeX = sizeGridX;
-            sizeY = sizeGridY ; 
+            sizeY = sizeGridY ;
+            gridColor = color;
             hardLayer = new bool[sizeX, sizeY + 1]; // Dodanie jednego wiersza jest konieczne by pierwsze bloki miały się na czym rozbijać
-            InitializeHardLayer();
+            InitializeHardLayer(gridColor);
             
         }
 
-        public void InitializeHardLayer()
+        public void InitializeHardLayer(Color color)
         {
             for(int i = 0; i < sizeX; i++)
             {
                 for(int j = 0; j <= sizeY; j++)
-                {                    
+                {
                     if(j == sizeY)
                         hardLayer[i, j] = true;
                     else
+                    {
                         hardLayer[i, j] = false;
+                        grid[i, j].Fill = new SolidColorBrush(color);
+                    }                        
                 }
             }                
         }
@@ -77,6 +82,34 @@ namespace SirTetLogic
                         LinesToDestroy.Add(point.Get()[1]);
             }
             return LinesToDestroy;
+        }
+
+        public void RestBlockFall(int whereStartFall, int fallLenght , int whereEndFall = 0)
+        {
+            for(int j = whereStartFall - fallLenght; j >= whereEndFall; j--)
+            {
+                if(IfLineClear(j + fallLenght, gridColor)) break;
+                else
+                {
+                    for(int i = 0;i < sizeX;i++)                    
+                    {                    
+                        hardLayer[i, j + fallLenght] = hardLayer[i, j];
+                        grid[i, j + fallLenght].Fill = grid[i, j].Fill.CloneCurrentValue();
+                    }                    
+                }
+            }
+        }
+
+        bool IfLineClear(int line, Color color)
+        {
+            for(int i = 0;i < sizeX;i++)
+            {
+                if(((SolidColorBrush)grid[i, line].Fill).ToString() != (new SolidColorBrush(color)).ToString())
+                {
+                    return false;
+                }                    
+            }
+            return true;
         }
 
         public bool[,] GetHardLayer => hardLayer;

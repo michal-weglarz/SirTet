@@ -37,8 +37,8 @@ namespace SirTetLogic
 
         public MainGameController(ref Rectangle[,] Grid, ref Rectangle[,] NextBlockGrid, ref TextBlock ScoreText, ref TextBlock ComboText, ref TextBlock RecordText, float GameSpeed = 0.5f, int blockGenerateX = 4, int blockGenerateY=2, int sizeGridX = 10, int sizeGridY = 24)
         {            
-            grid = new Grid(ref Grid);
-            nextBlockGrid = new Grid(ref NextBlockGrid,4,3);
+            grid = new Grid(ref Grid, Colors.Black);
+            nextBlockGrid = new Grid(ref NextBlockGrid, Colors.Black, 4, 3);
             startX = blockGenerateX;
             startY = blockGenerateY;
             sizeX = sizeGridX;
@@ -72,11 +72,13 @@ namespace SirTetLogic
                     {
                         foreach(int line in lineToClear)
                         {
-                            grid.ClearLine(line, Colors.Black);
+                            //grid.ClearLine(line, Colors.Black); //Działa ale  dopuki nie będzie robione na tyle wolno by być widocznym dla efektu graficznego z punktu optymalizacyjnego nie ma sensu
                             score.AddMainScore(1000);
                             score.AddLineCombo(1);
                             //Podlicznie punktów za linie
                         }
+                        lineToClear.Sort();
+                        grid.RestBlockFall(lineToClear[lineToClear.Count-1],  lineToClear.Count, startY + 2);
                     }
                     else
                     {
