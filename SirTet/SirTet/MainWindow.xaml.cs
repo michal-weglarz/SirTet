@@ -30,7 +30,7 @@ namespace SirTet
             InitializeComponent();
             GenerateBlockTable();
             GenerateNextBlockTable();
-            game = new MainGameController(ref blockTab, ref nextBlockTab, ref Score, ref Combo, ref Record);
+            game = new MainGameController(ref blockTab, ref nextBlockTab, ref Score, ref Combo, ref Record, ref DestroyedLines);
             KeyDown += GetKey;            
         }
 
@@ -82,8 +82,10 @@ namespace SirTet
                     game.RotateBlock();
                     break;
                 case "Down":
-                    game.BlockFall();
-                    game.BlockFall();
+                    game.BlockFall(2); 
+                    break;
+                case "Space":
+                    game.BlockFall(20); 
                     break;
             }
         }
