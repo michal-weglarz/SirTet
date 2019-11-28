@@ -9,16 +9,19 @@ namespace SirTetLogic
     {
         int mainScore = 0;
         int lineCombo = 0;
+        int destroyedLines = 0;
 
         TextBlock scoreText;
         TextBlock comboText;
         TextBlock recordText;
+        TextBlock destroyLinesText;
 
-        public Score(ref TextBlock ScoreText, ref TextBlock ComboText, ref TextBlock RecordText)
+        public Score(ref TextBlock ScoreText, ref TextBlock ComboText, ref TextBlock RecordText, ref TextBlock DestroyLinesText)
         {
             scoreText = ScoreText;
             comboText = ComboText;
             recordText= RecordText;
+            destroyLinesText = DestroyLinesText;
             recordText.Text = "Record: ";//Ustawianie rekordu
             SetText();
         }
@@ -26,7 +29,8 @@ namespace SirTetLogic
         void SetText()
         {
             scoreText.Text = "Score: " + mainScore;
-            comboText.Text = "Combo: " + lineCombo;            
+            comboText.Text = "Combo: " + lineCombo;
+            destroyLinesText.Text = "Destroyed Lines: " + destroyedLines;
         }
 
         public int GetMainScore()
@@ -46,6 +50,11 @@ namespace SirTetLogic
 
         public void AddLineCombo(int value) //Potrzebne dodatkowe zabezpieczenia
         {
+            int tetris = value / 4;
+            if(tetris > 0)
+            {
+                mainScore += tetris * 4000; 
+            }
             lineCombo += value;
             SetText();
         }
@@ -53,16 +62,16 @@ namespace SirTetLogic
         public void AddUpLineCombo(int comboWorth) 
         {
             if(lineCombo > 1)
-            {
-                int tetris = lineCombo / 4;
-                if(tetris > 0)
-                {
-                    mainScore += tetris * comboWorth * 4;
-                    lineCombo -= tetris * 4;
-                }
+            {                
                 mainScore += lineCombo * comboWorth;                  
             }
             lineCombo = 0;
+            SetText();
+        }
+
+        public void AddDestroyLineScore(int value)
+        {
+            destroyedLines += value;
             SetText();
         }
     }

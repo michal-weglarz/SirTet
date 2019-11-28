@@ -65,6 +65,7 @@
         <TextBlock Name="Record" Canvas.Left="400" TextWrapping="Wrap" Text="Record" Canvas.Top="230" Height="20" Width="148"/>
         <TextBlock Name="Score" Canvas.Left="400" TextWrapping="Wrap" Text="Score" Canvas.Top="190" Height="19" Width="165"/>
         <TextBlock Name="Combo" Canvas.Left="400" TextWrapping="Wrap" Text="Combo" Canvas.Top="154" Height="20" Width="92"/>
+        <TextBlock Name="DestroyedLines" Canvas.Left="400" TextWrapping="Wrap" Text="Destroyed Lines" Canvas.Top="268" Height="20" Width="148"/>
     </Canvas>
 
 </Window>

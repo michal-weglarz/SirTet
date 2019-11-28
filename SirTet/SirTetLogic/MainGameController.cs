@@ -14,7 +14,7 @@ namespace SirTetLogic
         int startX;
         int startY;
         int sizeX;
-        int sizeY;
+        int sizeY; 
 
         Grid grid;        
         Block block;
@@ -26,8 +26,7 @@ namespace SirTetLogic
         int nextBlockType;
         byte[] nextBlockColorArray;
 
-        Score score;
-        
+        Score score; 
 
         float gameSpeed;
         DateTime currentd_Time = DateTime.Now;
@@ -35,7 +34,7 @@ namespace SirTetLogic
 
         Random random = new Random();
 
-        public MainGameController(ref Rectangle[,] Grid, ref Rectangle[,] NextBlockGrid, ref TextBlock ScoreText, ref TextBlock ComboText, ref TextBlock RecordText, float GameSpeed = 0.5f, int blockGenerateX = 4, int blockGenerateY=2, int sizeGridX = 10, int sizeGridY = 24)
+        public MainGameController(ref Rectangle[,] Grid, ref Rectangle[,] NextBlockGrid, ref TextBlock ScoreText, ref TextBlock ComboText, ref TextBlock RecordText, ref TextBlock DestroyLinesText, float GameSpeed = 0.7f, int blockGenerateX = 4, int blockGenerateY=3, int sizeGridX = 10, int sizeGridY = 24)
         {            
             grid = new Grid(ref Grid, Colors.Black);
             nextBlockGrid = new Grid(ref NextBlockGrid, Colors.Black, 4, 3);
@@ -43,57 +42,63 @@ namespace SirTetLogic
             startY = blockGenerateY;
             sizeX = sizeGridX;
             sizeY = sizeGridY;
-            score = new Score(ref ScoreText, ref ComboText,ref RecordText);
-            gameSpeed = GameSpeed;
+            score = new Score(ref ScoreText, ref ComboText,ref RecordText, ref DestroyLinesText);
+            gameSpeed = GameSpeed; 
             CrateBlock();
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(gameSpeed);
             timer.Tick += timer_Tick;
             timer.Start();
-        }        
+        }
 
-        public void BlockFall()
+        public void BlockFall(int fallLenght)
         {
-            if(!block.IfTouchHardLayer(grid.GetHardLayer))
+            int counter = 0;           
+            while(!block.IfTouchHardLayer(grid.GetHardLayer) && fallLenght > counter)
             {
                 grid.DrawBlock(block.GetBlock(), Colors.Black);
                 block.Fall();
                 grid.DrawBlock(block.GetBlock(), blockColor);
-            }                
-            else
+                counter++;
+            }
+            
+            if( block.IfTouchHardLayer(grid.GetHardLayer))
             {
                 if(grid.Indurate(block.GetBlock(), 4))
+                {
                     GameOver();
+                    return;
+                }
                 else
                 {
                     List<int> lineToClear = grid.LinesToDestroy(block.GetBlock());
-                    if(lineToClear.Count>0)
-                    {
-                        foreach(int line in lineToClear)
-                        {
-                            //grid.ClearLine(line, Colors.Black); //Działa ale  dopuki nie będzie robione na tyle wolno by być widocznym dla efektu graficznego z punktu optymalizacyjnego nie ma sensu
-                            score.AddMainScore(1000);
-                            score.AddLineCombo(1);
-                            //Podlicznie punktów za linie
-                        }
+                    if(lineToClear.Count > 0)
+                    {  
+                        score.AddMainScore(lineToClear.Count * 1000);
+                        score.AddLineCombo(lineToClear.Count);
+                        score.AddDestroyLineScore(lineToClear.Count);
                         lineToClear.Sort();
-                        grid.RestBlockFall(lineToClear[lineToClear.Count-1],  lineToClear.Count, startY + 2);
+                        grid.RestBlockFall(lineToClear[lineToClear.Count - 1], lineToClear.Count, startY + 2);
                     }
                     else
                     {
-                        if(score.GetLineCombo()>0)
+                        if(score.GetLineCombo() > 0)
                             score.AddUpLineCombo(2000);//Podlicznie combo za linie
                     }
                     CrateBlock();
                 }
-            }
-                
+            }                  
         }
 
         void timer_Tick(object sender, EventArgs e)
         {
-            BlockFall();
+            BlockFall(1);
+            if((float)score.GetMainScore() > (10000f / gameSpeed) && (gameSpeed -  0.05f) > 0) // uposledzony poziom trudności
+            {
+                gameSpeed -= 0.05f;
+                timer.Interval = TimeSpan.FromSeconds(gameSpeed);
+            }
         }
 
         public void MoveBlockHorizontal(bool toLeft)
