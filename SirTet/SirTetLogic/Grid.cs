@@ -45,7 +45,7 @@ namespace SirTetLogic
         {
             foreach(Point point in Block)
                 grid[point.Get()[0], point.Get()[1]].Fill = new SolidColorBrush(color);
-        }
+        }         
 
         public void ClearLine(int lineToClear, Color color)
         {

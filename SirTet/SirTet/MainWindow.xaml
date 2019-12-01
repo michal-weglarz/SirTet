@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SirTet"
         mc:Ignorable="d"
         Title="MainWindow" Height="668" Width="640">
-    <Canvas HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="794" Margin="0,-3,-0.4,0">
+    <Canvas HorizontalAlignment="Left" Height="642" VerticalAlignment="Top" Width="441" Margin="0,-3,0,-0.6">
         <Grid>
             <Grid Height="768" Canvas.Left="0" Canvas.Top="10" Width="320" Background="Black" Name="sirtet_Grid_GameSpace" Margin="0,-128,0,128">
                 <Grid.RowDefinitions>
@@ -48,7 +48,32 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
             </Grid>
-            <Grid Background="Black" x:Name="sirtet_Grid_NextBlock" Margin="386,19,-166,649">
+            <Grid Background="Black"  Name="sirtet_Grid_NextBlock" Margin="337,277,-117,141">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <Grid Canvas.Left="0" Canvas.Top="10"  Background="Black"  Name="sirtet_Grid_HoldBlock" Margin="337,46,-117,642">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
@@ -62,10 +87,10 @@
                 </Grid.ColumnDefinitions>
             </Grid>
         </Grid>
-        <TextBlock Name="Record" Canvas.Left="400" TextWrapping="Wrap" Text="Record" Canvas.Top="230" Height="20" Width="148"/>
-        <TextBlock Name="Score" Canvas.Left="400" TextWrapping="Wrap" Text="Score" Canvas.Top="190" Height="19" Width="165"/>
-        <TextBlock Name="Combo" Canvas.Left="400" TextWrapping="Wrap" Text="Combo" Canvas.Top="154" Height="20" Width="92"/>
-        <TextBlock Name="DestroyedLines" Canvas.Left="400" TextWrapping="Wrap" Text="Destroyed Lines" Canvas.Top="268" Height="20" Width="148"/>
+        <TextBlock Name="Record" Canvas.Left="456" TextWrapping="Wrap" Text="Record" Canvas.Top="466" Height="20" Width="148"/>
+        <TextBlock Name="Score" Canvas.Left="456" TextWrapping="Wrap" Text="Score" Canvas.Top="426" Height="19" Width="165"/>
+        <TextBlock Name="Combo" Canvas.Left="456" TextWrapping="Wrap" Text="Combo" Canvas.Top="390" Height="20" Width="92"/>
+        <TextBlock Name="DestroyedLines" Canvas.Left="456" TextWrapping="Wrap" Text="Destroyed Lines" Canvas.Top="504" Height="20" Width="148"/>
     </Canvas>
 
 </Window>

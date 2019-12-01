@@ -22,15 +22,17 @@ namespace SirTet
     {
         MainGameController game;
         Rectangle[,] blockTab = new Rectangle[10,24];
-        Rectangle[,] nextBlockTab = new Rectangle[5, 5];
-        
+        Rectangle[,] nextBlockTab = new Rectangle[4, 15];
+        Rectangle[,] holdBlockTab = new Rectangle[4, 3];
 
         public MainWindow()
         {
             InitializeComponent();
-            GenerateBlockTable();
+            GenerateBlockTable();            
             GenerateNextBlockTable();
-            game = new MainGameController(ref blockTab, ref nextBlockTab, ref Score, ref Combo, ref Record, ref DestroyedLines);
+            GenerateHoldBlockTable();
+
+            game = new MainGameController(ref blockTab, ref nextBlockTab, ref holdBlockTab, ref Score, ref Combo, ref Record, ref DestroyedLines);
             KeyDown += GetKey;            
         }
 
@@ -53,9 +55,9 @@ namespace SirTet
 
         private void GenerateNextBlockTable()
         {
-            for(int i = 0;i < 5;i++)
+            for(int i = 0; i < 4; i++)
             {
-                for(int j = 0;j < 5;j++)
+                for(int j = 0; j < 15; j++)
                 {
                     Rectangle tile = new Rectangle();
                     tile.StrokeThickness = 1;
@@ -64,6 +66,23 @@ namespace SirTet
                     System.Windows.Controls.Grid.SetColumn(tile, i);
                     sirtet_Grid_NextBlock.Children.Add(tile);
                     nextBlockTab[i, j] = tile;
+                }
+            }
+        }
+
+        private void GenerateHoldBlockTable()
+        {
+            for(int i = 0;i < 4;i++)
+            {
+                for(int j = 0;j < 3;j++)
+                {
+                    Rectangle tile = new Rectangle();
+                    tile.StrokeThickness = 1;
+                    tile.Stroke = Brushes.White;
+                    System.Windows.Controls.Grid.SetRow(tile, j);
+                    System.Windows.Controls.Grid.SetColumn(tile, i);
+                    sirtet_Grid_HoldBlock.Children.Add(tile);
+                    holdBlockTab[i, j] = tile;
                 }
             }
         }
@@ -86,6 +105,9 @@ namespace SirTet
                     break;
                 case "Space":
                     game.BlockFall(20); 
+                    break;
+                case "LeftCtrl":
+                    game.HoldBlock();
                     break;
             }
         }
