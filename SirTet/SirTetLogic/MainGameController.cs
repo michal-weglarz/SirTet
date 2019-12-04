@@ -43,7 +43,7 @@ namespace SirTetLogic
 
         Random random = new Random();
 
-        public MainGameController(ref Rectangle[,] Grid, ref Rectangle[,] NextBlockGrid, ref Rectangle[,] HoldBlockGrid, ref TextBlock ScoreText, ref TextBlock ComboText, ref TextBlock RecordText, ref TextBlock DestroyLinesText, float GameSpeed = 0.7f, int BlockToPreview = 5, int blockGenerateX = 4, int blockGenerateY=3, int sizeGridX = 10, int sizeGridY = 24)
+        public MainGameController(ref Rectangle[,] Grid, ref Rectangle[,] NextBlockGrid, ref Rectangle[,] HoldBlockGrid, ref TextBox PlayerNick, ref TextBlock ScoreText, ref TextBlock ComboText, ref TextBlock RecordText, ref TextBlock DestroyLinesText, float GameSpeed = 0.7f, int BlockToPreview = 5, int blockGenerateX = 4, int blockGenerateY=3, int sizeGridX = 10, int sizeGridY = 24)
         {            
             grid = new Grid(ref Grid, Colors.Black);
             nextBlockGrid = new Grid(ref NextBlockGrid, Colors.Black, 4, 15);
@@ -57,10 +57,9 @@ namespace SirTetLogic
             nextBlock = new Block[BlockToPreview];
             nextBlockType = new int[BlockToPreview];
             nextBlockColorArray = new byte[BlockToPreview][];
-            score = new Score(ref ScoreText, ref ComboText,ref RecordText, ref DestroyLinesText);
+            score = new Score(ref ScoreText, ref ComboText,ref RecordText, ref DestroyLinesText ,ref PlayerNick);
             gameSpeed = GameSpeed; 
-            CrateBlock();
-
+            CrateBlock();            
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(gameSpeed);
             timer.Tick += timer_Tick;
@@ -301,8 +300,9 @@ namespace SirTetLogic
             
         }
 
-        void GameOver() //Tutaj co się dzieje po przegranej // Narazie tylko restart
+        void GameOver() //Tutaj co się dzieje po przegranej // Narazie tylko restart i zapisywanie score
         {
+            score.SetRecords();
             System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
             Application.Current.Shutdown();
         }
