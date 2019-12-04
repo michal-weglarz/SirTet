@@ -1,4 +1,5 @@
 ﻿<Window x:Class="SirTet.MainWindow"
+        Background="Purple"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -87,10 +88,13 @@
                 </Grid.ColumnDefinitions>
             </Grid>
         </Grid>
-        <TextBlock Name="Record" Canvas.Left="456" TextWrapping="Wrap" Text="Record" Canvas.Top="466" Height="20" Width="148"/>
-        <TextBlock Name="Score" Canvas.Left="456" TextWrapping="Wrap" Text="Score" Canvas.Top="426" Height="19" Width="165"/>
-        <TextBlock Name="Combo" Canvas.Left="456" TextWrapping="Wrap" Text="Combo" Canvas.Top="390" Height="20" Width="92"/>
-        <TextBlock Name="DestroyedLines" Canvas.Left="456" TextWrapping="Wrap" Text="Destroyed Lines" Canvas.Top="504" Height="20" Width="148"/>
+        <TextBlock Name="Record" Canvas.Left="456" TextWrapping="Wrap" Text="Record: " Canvas.Top="280" Height="342" Width="148"/>
+        <TextBlock Name="Score" Canvas.Left="456" TextWrapping="Wrap" Text="Score: 0" Canvas.Top="84" Height="19" Width="165"/>
+        <TextBlock Name="Combo" Canvas.Left="456" TextWrapping="Wrap" Text="Combo: 0" Canvas.Top="49" Height="20" Width="92"/>
+        <TextBlock Name="DestroyedLines" Canvas.Left="456" TextWrapping="Wrap" Text="Destroyed Lines: 0" Canvas.Top="121" Height="20" Width="148"/>
+        <TextBox Name="PlayerNick" Height="22" Canvas.Left="456" TextWrapping="Wrap" Text="Player" Canvas.Top="147" Width="120"/>
+        <TextBlock Canvas.Left="425" TextWrapping="Wrap" Text="Nick:" Canvas.Top="147"/>
+        <Button Name="StartButton" Content="SirTet Activation" Canvas.Left="456" Canvas.Top="184" Width="101" Click="StartButton_Click"/>
     </Canvas>
 
 </Window>

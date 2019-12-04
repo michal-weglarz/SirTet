@@ -28,12 +28,11 @@ namespace SirTet
         public MainWindow()
         {
             InitializeComponent();
+            SirTetLogic.Score.DrawRecords(ref Record);
             GenerateBlockTable();            
             GenerateNextBlockTable();
             GenerateHoldBlockTable();
-
-            game = new MainGameController(ref blockTab, ref nextBlockTab, ref holdBlockTab, ref Score, ref Combo, ref Record, ref DestroyedLines);
-            KeyDown += GetKey;            
+                      
         }
 
         private void GenerateBlockTable ()
@@ -111,6 +110,13 @@ namespace SirTet
                     break;
             }
         }
-                
+
+        private void StartButton_Click(object sender, RoutedEventArgs e)
+        {
+            game = new MainGameController(ref blockTab, ref nextBlockTab, ref holdBlockTab, ref PlayerNick, ref Score, ref Combo, ref Record, ref DestroyedLines);
+            KeyDown += GetKey;
+            StartButton.IsEnabled = false;
+            PlayerNick.IsEnabled = false;
+        }
     }
 }
