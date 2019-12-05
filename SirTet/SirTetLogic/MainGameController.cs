@@ -64,6 +64,7 @@ namespace SirTetLogic
             timer.Interval = TimeSpan.FromSeconds(gameSpeed);
             timer.Tick += timer_Tick;
             timer.Start();
+            Music.GameStartSFX();
         }
 
         public void BlockFall(int fallLenght)
@@ -71,6 +72,7 @@ namespace SirTetLogic
             int counter = 0;           
             while(!block.IfTouchHardLayer(grid.GetHardLayer) && fallLenght > counter)
             {
+                Music.FallSFX();
                 grid.DrawBlock(block.GetBlock(), Colors.Black);
                 block.Fall();
                 grid.DrawBlock(block.GetBlock(), blockColor);
@@ -81,6 +83,7 @@ namespace SirTetLogic
             {
                 if(grid.Indurate(block.GetBlock(), 4))
                 {
+                    Music.GameOverSFX();
                     GameOver();
                     return;
                 }
@@ -88,7 +91,8 @@ namespace SirTetLogic
                 {
                     List<int> lineToClear = grid.LinesToDestroy(block.GetBlock());
                     if(lineToClear.Count > 0)
-                    {  
+                    {
+                        Music.LineClearSFX();
                         score.AddMainScore(lineToClear.Count * 1000);
                         score.AddLineCombo(lineToClear.Count);
                         score.AddDestroyLineScore(lineToClear.Count);
@@ -98,7 +102,10 @@ namespace SirTetLogic
                     else
                     {
                         if(score.GetLineCombo() > 0)
+                        {
                             score.AddUpLineCombo(2000);//Podlicznie combo za linie
+                            Music.ComboSFX();
+                        }
                     }
                     CrateBlock();
                 }
@@ -119,6 +126,7 @@ namespace SirTetLogic
         {
             if(!block.IfOutOfGrid(sizeX, toLeft) && !block.IfBlockOverride(grid.GetHardLayer, toLeft))
             {
+                Music.MoveSFX();
                 grid.DrawBlock(block.GetBlock(), Colors.Black);
                 block.Move(toLeft);
                 grid.DrawBlock(block.GetBlock(), blockColor);
@@ -129,6 +137,7 @@ namespace SirTetLogic
         {
             if(!block.IfBlockOutOfGridOnRotate(sizeX) && !block.IfBlockOverrideOnRotate(grid.GetHardLayer))
             {
+                Music.RotateSFX();
                 grid.DrawBlock(block.GetBlock(), Colors.Black);
                 block.Rotate();
                 grid.DrawBlock(block.GetBlock(), blockColor);
@@ -265,7 +274,9 @@ namespace SirTetLogic
             Block tempBlock;
             int tempBlockType;
             byte[] tempBlockColorArray;
-            
+
+            Music.MoveSFX();
+
             if(holdBlock == null)
             {
                 holdBlockType = blockType;

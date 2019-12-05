@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using System.Media;
 using SirTetLogic;
 
 
@@ -29,10 +30,10 @@ namespace SirTet
         {
             InitializeComponent();
             SirTetLogic.Score.DrawRecords(ref Record);
+            Music.MainTheme();
             GenerateBlockTable();            
             GenerateNextBlockTable();
-            GenerateHoldBlockTable();
-                      
+            GenerateHoldBlockTable();            
         }
 
         private void GenerateBlockTable ()
