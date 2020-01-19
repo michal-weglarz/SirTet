@@ -5,7 +5,7 @@ using SirTetLogic;
 namespace UnitTestSirTet
 {
     [TestClass]
-    public class UnitTest1
+    public class PointUnitTest
     {
         [TestMethod]
         public void TestIfFieldsAreInitializedCorrectlyWithConstructorCall()

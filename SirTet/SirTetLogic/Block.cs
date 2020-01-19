@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SirTetLogic
 {
-    abstract class Block
+    public abstract class Block
     {
         protected abstract Point MiddlePoint{get;}
         protected abstract Point[] RestPoints{get;}
