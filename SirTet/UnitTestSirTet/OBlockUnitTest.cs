@@ -9,6 +9,27 @@ namespace UnitTestSirTet
     {
 
         [TestMethod]
+        public void TestIfAllThreePrivateFieldsAreSetByConstructorCall()
+        {
+            int middleX = 23;
+            int middleY = 17;
+            Block oBlock = new O_Block(middleX, middleY);
+            PrivateObject po = new PrivateObject(oBlock);
+
+            Point actualMiddlePoint = (Point)po.GetField("middlePoint");
+            Point[] actualRestPoints = (Point[])po.GetField("restPoints");
+            Point[] actualAllPoints = (Point[])po.GetField("allPoints");
+
+            int expectedMiddlePointLength = 2;
+            int expectedRestPointsLength = 3;
+            int expectedActualAllPointsLength = 4;
+
+            Assert.AreEqual(expectedMiddlePointLength, actualMiddlePoint.Get().Length);
+            Assert.AreEqual(expectedRestPointsLength, actualRestPoints.Length);
+            Assert.AreEqual(expectedActualAllPointsLength, actualAllPoints.Length);
+        }
+
+        [TestMethod]
         public void TestIfMiddlePointIsSetCorrectly()
         {
             int middleX = 4;
