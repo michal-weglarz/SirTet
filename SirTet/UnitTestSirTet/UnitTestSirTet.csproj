@@ -59,6 +59,7 @@
     <Compile Include="OBlockUnitTest.cs" />
     <Compile Include="PointUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZBlockUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
