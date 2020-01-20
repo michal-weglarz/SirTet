@@ -55,6 +55,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JBLockUnitTest.cs" />
     <Compile Include="LBlockUnitTest.cs" />
     <Compile Include="OBlockUnitTest.cs" />
     <Compile Include="PointUnitTest.cs" />
