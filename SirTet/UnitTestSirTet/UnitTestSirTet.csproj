@@ -61,6 +61,7 @@
     <Compile Include="OBlockUnitTest.cs" />
     <Compile Include="PointUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SBlockUnitTest.cs" />
     <Compile Include="TBlockUnitTest.cs" />
     <Compile Include="ZBlockUnitTest.cs" />
   </ItemGroup>
