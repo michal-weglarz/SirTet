@@ -5,6 +5,10 @@ using System.Windows.Controls;
 
 namespace SirTetLogic
 {
+    /// <summary>
+    /// The main Score class
+    /// Contains all method for performing Score function
+    /// </summary>
     public class Score
     {
         int mainScore = 0;
@@ -22,7 +26,14 @@ namespace SirTetLogic
         TextBlock comboText;
         TextBlock recordText;
         TextBlock destroyLinesText;
-
+        /// <summary>
+        /// Initialize a new instance of the <see cref="Score"/> class
+        /// </summary>
+        /// <param name="ScoreText">Variable contains reference to cavas element</param>
+        /// <param name="ComboText">Variable contains reference to cavas element</param>
+        /// <param name="RecordText">Variable contains reference to cavas element</param>
+        /// <param name="DestroyLinesText">Variable contains reference to cavas element</param>
+        /// <param name="PlayerNick">Variable contains reference to cavas element</param>
         public Score(ref TextBlock ScoreText, ref TextBlock ComboText, ref TextBlock RecordText, ref TextBlock DestroyLinesText, ref TextBox PlayerNick)
         {
             scoreText = ScoreText;
@@ -32,7 +43,9 @@ namespace SirTetLogic
             playerNick = PlayerNick.Text;
             SetText();
         }
-
+        /// <summary>
+        /// Method responsible for displaying texts
+        /// </summary>
         void SetText()
         {
             scoreText.Text = "Score: " + mainScore;
@@ -40,22 +53,34 @@ namespace SirTetLogic
             destroyLinesText.Text = "Destroyed Lines: " + destroyedLines;
             DrawRecords();
         }
-
+        /// <summary>
+        /// Method responsible for getting mains score
+        /// </summary>
+        /// <returns>Information about main score</returns>
         public int GetMainScore()
         {
             return mainScore;
         }
-
+        /// <summary>
+        /// Method responsible for adding score
+        /// </summary>
+        /// <param name="value"></param>
         public void AddMainScore(int value) //Potrzebne dodatkowe zabezpieczenia
         {
             mainScore += value;
         }
-
+        /// <summary>
+        /// Method responsible for getting combo
+        /// </summary>
+        /// <returns>Return information about line combo</returns>
         public int GetLineCombo()
         {
             return lineCombo;
         }
-
+        /// <summary>
+        /// Method responsible for adding line combo
+        /// </summary>
+        /// <param name="value">Variable containing value of points</param>
         public void AddLineCombo(int value) //Potrzebne dodatkowe zabezpieczenia
         {
             int tetris = value / 4;
@@ -66,7 +91,10 @@ namespace SirTetLogic
             lineCombo += value;
             SetText();
         }
-
+        /// <summary>
+        /// Method responsible adding line combo for more then one line
+        /// </summary>
+        /// <param name="comboWorth">Arable containing value of combo</param>
         public void AddUpLineCombo(int comboWorth) 
         {
             if(lineCombo > 1)
@@ -76,13 +104,19 @@ namespace SirTetLogic
             lineCombo = 0;
             SetText();
         }
-
+        /// <summary>
+        /// Method responsible for adding destroyed lines 
+        /// </summary>
+        /// <param name="value">Variable containing value of destroyed lines</param>
         public void AddDestroyLineScore(int value)
         {
             destroyedLines += value;
             SetText();
         }
-
+        /// <summary>
+        /// Method for displaying records scores form file
+        /// </summary>
+        /// <param name="RecordText">Variable contains reference to canvas element</param>
         public static void DrawRecords(ref TextBlock RecordText)
         { 
             string[] records = new string[0];
@@ -118,7 +152,9 @@ namespace SirTetLogic
 
         }
 
-
+        /// <summary>
+        /// Method for displaying records scores from file
+        /// </summary>
         void DrawRecords()
         {
             //recordText
@@ -156,7 +192,9 @@ namespace SirTetLogic
             }
             
         }
-
+        /// <summary>
+        /// Method for saving records scores to file
+        /// </summary>
         public void SetRecords()
         {
             int tmpScore = mainScore;
