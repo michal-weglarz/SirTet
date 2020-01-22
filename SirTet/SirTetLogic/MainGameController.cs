@@ -9,6 +9,10 @@ using System.Windows.Controls;
 
 namespace SirTetLogic
 {
+    /// <summary>
+    /// The main MainGameController class
+    /// Contains all method for performing MainGameController function
+    /// </summary>
     public class MainGameController
     {        
         int startX;
@@ -42,7 +46,23 @@ namespace SirTetLogic
         DispatcherTimer timer;
 
         Random random = new Random();
-
+        /// <summary>
+        /// Initialize a new instance of the <see cref="MainGameController"/> class
+        /// </summary>
+        /// <param name="Grid">Variable contains reference to two dimensional table contains canvas elements</param>
+        /// <param name="NextBlockGrid">Variable contains reference to two dimensional table contains canvas elements</param>
+        /// <param name="HoldBlockGrid">Variable contains reference to two dimensional table contains canvas elements</param>
+        /// <param name="PlayerNick">Variable contains reference to canvas element</param>
+        /// <param name="ScoreText">Variable contains reference to canvas element</param>
+        /// <param name="ComboText">Variable contains reference to canvas element</param>
+        /// <param name="RecordText">Variable contains reference to canvas element</param>
+        /// <param name="DestroyLinesText">Variable contains reference to canvas element</param>
+        /// <param name="GameSpeed">Variable contains float number</param>
+        /// <param name="BlockToPreview">Variable contains</param>
+        /// <param name="blockGenerateX">Variable contains index of row</param>
+        /// <param name="blockGenerateY">Variable contains index of row</param>
+        /// <param name="sizeGridX">Variable contains number of columns</param>
+        /// <param name="sizeGridY">Variable contains number of rows</param>
         public MainGameController(ref Rectangle[,] Grid, ref Rectangle[,] NextBlockGrid, ref Rectangle[,] HoldBlockGrid, ref TextBox PlayerNick, ref TextBlock ScoreText, ref TextBlock ComboText, ref TextBlock RecordText, ref TextBlock DestroyLinesText, float GameSpeed = 0.7f, int BlockToPreview = 5, int blockGenerateX = 4, int blockGenerateY=3, int sizeGridX = 10, int sizeGridY = 24)
         {            
             grid = new Grid(ref Grid, Colors.Black);
@@ -66,7 +86,10 @@ namespace SirTetLogic
             timer.Start();
             Music.GameStartSFX();
         }
-
+        /// <summary>
+        /// Method responsible for blocks moving one row lower
+        /// </summary>
+        /// <param name="fallLenght">Number of how many lines should block fall</param>
         public void BlockFall(int fallLenght)
         {
             int counter = 0;           
@@ -103,7 +126,7 @@ namespace SirTetLogic
                     {
                         if(score.GetLineCombo() > 0)
                         {
-                            score.AddUpLineCombo(2000);//Podlicznie combo za linie
+                            score.AddUpLineCombo(2000);//Podliczanie combo za linie
                             Music.ComboSFX();
                         }
                     }
@@ -111,7 +134,11 @@ namespace SirTetLogic
                 }
             }                  
         }
-
+        /// <summary>
+        /// Method responsible for timer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void timer_Tick(object sender, EventArgs e)
         {
             BlockFall(1);
@@ -121,7 +148,10 @@ namespace SirTetLogic
                 timer.Interval = TimeSpan.FromSeconds(gameSpeed);
             }
         }
-
+        /// <summary>
+        /// Method responsible for moving blocks to left and right
+        /// </summary>
+        /// <param name="toLeft">Bool contains information if key to move left is pressed</param>
         public void MoveBlockHorizontal(bool toLeft)
         {
             if(!block.IfOutOfGrid(sizeX, toLeft) && !block.IfBlockOverride(grid.GetHardLayer, toLeft))
@@ -132,7 +162,9 @@ namespace SirTetLogic
                 grid.DrawBlock(block.GetBlock(), blockColor);
             }                
         }
-
+        /// <summary>
+        /// Method responsible for rotation of blocks
+        /// </summary>
         public void RotateBlock()
         {
             if(!block.IfBlockOutOfGridOnRotate(sizeX) && !block.IfBlockOverrideOnRotate(grid.GetHardLayer))
@@ -143,7 +175,9 @@ namespace SirTetLogic
                 grid.DrawBlock(block.GetBlock(), blockColor);
             }                       
         }
-
+        /// <summary>
+        /// Method responsible for creating and drawing block
+        /// </summary>
         void CrateBlock()
         {
             if(block == null)
@@ -177,7 +211,14 @@ namespace SirTetLogic
                 DrawNextBlock(nextBlock[i].GetBlockType(), nextBlockColor[i], i, 1 + (3 * i));
             }
         }
-
+        /// <summary>
+        /// Method for generating block
+        /// </summary>
+        /// <param name="BlockType">Variable contains index of block type</param>
+        /// <param name="ifMainBlock">Variable contains a bool about the block whether it is main or not</param>
+        /// <param name="x">Variable contains index of column. Default value = -1</param>
+        /// <param name="y">Variable contains index of row. Default value = -1</param>
+        /// <returns>Return generated block</returns>
         Block GenerateBlock(int BlockType = 0, bool ifMainBlock = false, int x = -1, int y = -1)
         {            
             if(BlockType == 0)
@@ -209,7 +250,13 @@ namespace SirTetLogic
             }
             throw new Exception();
         }
-
+        /// <summary>
+        /// Method for generating color
+        /// </summary>
+        /// <param name="r">Variable contains value of red color</param>
+        /// <param name="g">Variable contains value of green color</param>
+        /// <param name="b">Variable contains value of blue color</param>
+        /// <returns>Return generated color</returns>
         Color GenerateColor(byte r = 0, byte g = 0, byte b = 0)
         {            
             Color color;
@@ -221,7 +268,14 @@ namespace SirTetLogic
                 color = Color.FromArgb(255, r, g, b);
             return color;            
         }
-
+        /// <summary>
+        /// Method for drawing next block
+        /// </summary>
+        /// <param name="blockType">Variable contains name of block</param>
+        /// <param name="blockColor">Variable contains color of block</param>
+        /// <param name="blockNumber">Variable contains index of block</param>
+        /// <param name="y">Variable contains index of row. Default value = 1</param>
+        /// <param name="x">Variable contains index of column. Default value = 1</param>
         void DrawNextBlock(string blockType, Color blockColor,int blockNumber, int y = 1, int x = 1)
         {
             Block preparedBlock;
@@ -267,7 +321,9 @@ namespace SirTetLogic
             }            
             nextBlockGrid.DrawBlock(preparedBlock.GetBlock(), blockColor);
         }
-
+        /// <summary>
+        /// Method responsible for holding block
+        /// </summary>
         public void HoldBlock()
         { 
             Color tempBlockColor;
@@ -310,7 +366,9 @@ namespace SirTetLogic
             }           
             
         }
-
+        /// <summary>
+        /// Method responsible for game over
+        /// </summary>
         void GameOver() //Tutaj co się dzieje po przegranej // Narazie tylko restart i zapisywanie score
         {
             score.SetRecords();
