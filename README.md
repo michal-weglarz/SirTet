@@ -4,7 +4,9 @@
 SirTet is a .NET C# project game modeled on classic tetris. Created to pass C# course. 
 
 # Instruction
-
+&#8594; &#8592; - moving blocks to right or left
+&#8595; - move block one layer down
+Space - instanly movee block to bottom
 
 # Contributing
 Tomaszek Krzystof - project logic 
@@ -12,9 +14,9 @@ Sczesiak Patryk - XML documentation, visual creation
 Węglarz Michał - unit tests
 
 # Credits
-[Tomaszek Krzystof](https://github.com/KrzysztofTomaszek)
-[Szczesiak Patryk](https://github.com/Sheercan984)
-[Węglarz Michał](https://github.com/morteify)
+[Tomaszek Krzystof](https://github.com/KrzysztofTomaszek)</br>
+[Szczesiak Patryk](https://github.com/Sheercan984)</br>
+[Węglarz Michał](https://github.com/morteify)</br>
 
 # License
 MIT License
