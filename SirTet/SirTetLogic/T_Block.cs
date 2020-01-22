@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SirTetLogic
 {
-    class T_Block: Block
+    public class T_Block: Block
     {
         Point middlePoint;
         Point[] restPoints;
