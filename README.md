@@ -16,7 +16,7 @@ After installing and running the program, enter your nickname and press Play.
 &#8595; - move block one layer down  
 Space - instanly movee block to bottom  
 &#8593; - Rotate block  
-Left Ctrl - Rotate block  
+Left Ctrl - Hold block  
 
 # Contributing
 Tomaszek Krzystof - project logic  
