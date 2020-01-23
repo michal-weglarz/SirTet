@@ -8,7 +8,7 @@ SirTet is a .NET C# project game modeled on classic tetris. Created to pass C# c
 # Installation
 The repository contains the entire sollution and prepared .exe installer in the Setup folder.
 
-#Usage
+# Usage
 After installing and running the program, enter your nickname and press Play.
 
 # Instruction
